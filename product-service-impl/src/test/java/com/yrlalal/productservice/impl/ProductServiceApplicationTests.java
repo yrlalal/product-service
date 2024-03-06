@@ -1,4 +1,4 @@
-package com.yrlalal.productservice;
+package com.yrlalal.productservice.impl;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
