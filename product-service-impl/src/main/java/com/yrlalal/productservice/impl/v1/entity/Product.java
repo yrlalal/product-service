@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Getter
@@ -14,7 +14,7 @@ import java.util.List;
 public class Product {
     @Id
     private String productId;
-    private Instant created;
+    private ZonedDateTime created;
     private String productName;
     private String productDescription;
     private List<String> productTags;

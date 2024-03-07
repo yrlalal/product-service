@@ -1,5 +1,5 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://product_service:product_service@localhost:27017/
+      uri: mongodb://product_service:product_service@localhost:27017/productDB?authSource=admin&retryWrites=true&w=majority
       database: productDB
