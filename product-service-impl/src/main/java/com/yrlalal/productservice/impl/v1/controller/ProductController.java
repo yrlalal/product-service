@@ -5,17 +5,12 @@ import com.yrlalal.productservice.api.v1.model.CreateProductRequest;
 import com.yrlalal.productservice.api.v1.model.Product;
 import com.yrlalal.productservice.impl.v1.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.MessageFormat;
-
 @RestController
 public class ProductController implements ProductApi {
-    @Value("${app.product.cache.duration.seconds}")
-    private String cacheDurationInSeconds;
     private final ProductService productService;
 
     @Autowired
@@ -24,19 +19,17 @@ public class ProductController implements ProductApi {
     }
     @Override
     public ResponseEntity<Product> createProduct(CreateProductRequest productRequest) {
-        HttpHeaders httpHeaders = getHttpHeaders();
-        return ResponseEntity.ok().headers(httpHeaders).body(productService.createProduct(productRequest));
+        return productService.createProduct(productRequest);
     }
 
     @Override
-    public ResponseEntity<Product> getProduct(String productId) {
-        return ResponseEntity.ok().headers(getHttpHeaders()).body(productService.getProduct(productId));
-    }
+    public ResponseEntity<Product> getProduct(String productId, String inputEtag) {
+        ResponseEntity<Product> product = productService.getProduct(productId);
 
-    private HttpHeaders getHttpHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setCacheControl(MessageFormat.format("max-age={0}, must-revalidate",
-                cacheDurationInSeconds));
-        return httpHeaders;
+        // TODO: Update logic to get ETAG first.
+        // If ETAG values do not match, then retrieve the entire product.
+        return product.getHeaders().getETag() != null && product.getHeaders().getETag().equals(inputEtag)
+                ? ResponseEntity.status(HttpStatus.NOT_MODIFIED).build()
+                : product;
     }
 }

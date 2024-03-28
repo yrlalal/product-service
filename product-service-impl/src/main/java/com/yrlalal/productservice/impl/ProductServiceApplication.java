@@ -1,5 +1,7 @@
 package com.yrlalal.productservice.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.yrlalal.productservice.api.ProductServiceApiConfiguration;
 import com.yrlalal.productservice.impl.mongo.MongoConfig;
 import org.modelmapper.ModelMapper;
@@ -19,5 +21,12 @@ public class ProductServiceApplication {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+
+	@Bean
+	public ObjectMapper objectMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		return objectMapper;
 	}
 }

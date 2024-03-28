@@ -14,6 +14,7 @@ import java.util.List;
 public class Product {
     @Id
     private String productId;
+    private String etag;
     private ZonedDateTime created;
     private String productName;
     private String productDescription;
