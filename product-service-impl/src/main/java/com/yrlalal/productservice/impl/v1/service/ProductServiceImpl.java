@@ -7,7 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,6 +33,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(String productId) {
-        return null;
+        Optional<com.yrlalal.productservice.impl.v1.entity.Product> optionalProduct = productrepository.findById(productId);
+        if (optionalProduct.isEmpty()) {
+            throw new RuntimeException(MessageFormat.format("Product {0} not found", productId));
+        }
+        return modelMapper.map(optionalProduct.get(), Product.class);
     }
 }

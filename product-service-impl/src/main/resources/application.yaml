@@ -1,0 +1,5 @@
+app:
+  product:
+    cache:
+      duration:
+        seconds: 3600
